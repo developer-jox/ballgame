@@ -18,8 +18,8 @@ class Boll extends Point.Double {
 //    {87, 83, 65, 68},
 //        {38, 40, 37, 39}
 //    };
-    static HashMap<Integer, HashSet<Boll>> map = new HashMap();
-    double ox;
+    static HashMap<Point, HashSet<Boll>> map = new HashMap();
+    Point ph = new Point();
     int tics;
     int[] myKeys;
     double vx, vy;
@@ -104,25 +104,43 @@ class Boll extends Point.Double {
         Boll target = firstHit();
         if (target != null) {
             // unmove
-            double tvx = vx, tvy = vy;
-            vx = target.vx;
-            vy = target.vy;
-            target.vx = tvx;
-            target.vy = tvy;
+            if ((Math.abs(vx - target.vx) < 1) && (Math.abs(vy - target.vy) < 1)) {
+                double dist = target.distance(this);
+                double tdx = (vx - target.vx) / dist;
+                double tdy = (vy - target.vy) / dist;
+                double asd = 2 * radius - dist;
+                asd /= (radius * 2);
+                target.vx -= (tdx * asd) * 20;
+                target.vy -= (tdy * asd) * 20;
+                vx += (tdx * asd) * 20;
+                vy += (tdy * asd) * 20;
+                System.out.println("tdx: " + (tdx * asd * 5)) ;
+                System.out.println("tdy: " + (tdy * asd * 5));
+                System.out.println("asd: " + asd);
+                System.out.println("");
+            } else {
+                double tvx = vx, tvy = vy;
+                vx = target.vx;
+                vy = target.vy;
+                target.vx = tvx;
+                target.vy = tvy;
+            }
         }
 
     }
 
     public Boll firstHit() {
-        ArrayList list = new ArrayList();
-
+        Point tPh = new Point();
         for (int hx = -1; hx <= 1; hx += 1) {
-            for (Boll ball : get((int) ox + hx)) {
-                if (ball == this) {
-                    continue;
-                }
-                if (ball.hits(this)) {
-                    return ball;
+            for (int hy = -1; hy <= 1; hy += 1) {
+                tPh.setLocation(ph.x + hx, ph.y + hy);
+                for (Boll ball : get(tPh)) {
+                    if (ball == this) {
+                        continue;
+                    }
+                    if (ball.hits(this)) {
+                        return ball;
+                    }
                 }
             }
         }
@@ -131,14 +149,17 @@ class Boll extends Point.Double {
 
     public ArrayList<Boll> hits() {
         ArrayList list = new ArrayList();
-
+        Point tPh = new Point();
         for (int hx = -1; hx <= 1; hx += 1) {
-            for (Boll ball : get((int) ox + hx)) {
-                if (ball == this) {
-                    continue;
-                }
-                if (ball.hits(this)) {
-                    list.add(ball);
+            for (int hy = -1; hy <= 1; hy += 1) {
+                tPh.setLocation(ph.x + hx, ph.y + hy);
+                for (Boll ball : get(tPh)) {
+                    if (ball == this) {
+                        continue;
+                    }
+                    if (ball.hits(this)) {
+                        list.add(ball);
+                    }
                 }
             }
         }
@@ -159,7 +180,7 @@ class Boll extends Point.Double {
         }
         double oy = y / (radius * 2);
         grphcs.setColor(Color.MAGENTA);
-        grphcs.drawRect((int) ox * (int) radius * 2, (int) oy * (int) radius * 2,(int) radius * 2,(int) radius * 2);
+        grphcs.drawRect((int) ph.x * (int) radius * 2, (int) oy * (int) radius * 2, (int) radius * 2, (int) radius * 2);
     }
 
     boolean hits(Boll other) {
@@ -170,19 +191,20 @@ class Boll extends Point.Double {
     }
 
     private void insert() {
-        if (map.containsKey((int) ox)) {
-            map.get((int) ox).remove(this);
+        if (map.containsKey(ph)) {
+            map.get(ph).remove(this);
         }
-        ox = x / (radius * 2);
-        HashSet set = map.get((int) ox);
+        ph.x = (int) (x / (radius * 2));
+        ph.y = (int) (y / (radius * 2));
+        HashSet set = map.get(ph);
         if (set == null) {
             set = new HashSet();
-            map.put((int) ox, set);
+            map.put(ph, set);
         }
         set.add(this);
     }
 
-    private HashSet<Boll> get(int key) {
+    private HashSet<Boll> get(Point key) {
         HashSet set = map.get(key);
         if (set == null) {
             set = new HashSet();
