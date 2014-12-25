@@ -106,16 +106,18 @@ class Boll extends Point.Double {
             // unmove
             if ((Math.abs(vx - target.vx) < 1) && (Math.abs(vy - target.vy) < 1)) {
                 double dist = target.distance(this);
-                double tdx = (vx - target.vx) / dist;
-                double tdy = (vy - target.vy) / dist;
+                double tdx = (x - target.x) / dist;
+                double tdy = (y - target.y) / dist;
                 double asd = 2 * radius - dist;
                 asd /= (radius * 2);
-                target.vx -= (tdx * asd) * 20;
-                target.vy -= (tdy * asd) * 20;
-                vx += (tdx * asd) * 20;
-                vy += (tdy * asd) * 20;
-                System.out.println("tdx: " + (tdx * asd * 5)) ;
-                System.out.println("tdy: " + (tdy * asd * 5));
+                double dvx = (tdx * asd) * 8;
+                double dvy = (tdy * asd) * 8;
+                target.vx -= dvx;
+                target.vy -= dvy;
+                vx += dvx;
+                vy += dvy;
+                System.out.println("tdx: " + (tdx * asd * 8)) ;
+                System.out.println("tdy: " + (tdy * asd * 8));
                 System.out.println("asd: " + asd);
                 System.out.println("");
             } else {
