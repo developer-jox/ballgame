@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 class GamePanel extends JPanel {
 
-    int N = 301;
+    int N = 101;
 
     Boll[] boll = new Boll[N];
 
@@ -25,7 +25,7 @@ class GamePanel extends JPanel {
         setPreferredSize(new Dimension(1024, 1000));
         setDoubleBuffered(true);
 
-        boll[0] = new Boll(30, 30, 20, 0, new int[]{'W', 'S', 'A', 'D'}, 0.998, Color.GRAY);
+        boll[0] = new Boll(30, 30, 20, 0, new int[]{'W', 'S', 'A', 'D'}, 0.990, Color.GRAY);
         for (int i = 1; i < N; i++) {
             boll[i] = new Boll((80 + i * 50) % 1000, 100 + (i / 20) * 75, 20, 0, new int[]{KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT}, 0.998, Color.BLUE);
         }
