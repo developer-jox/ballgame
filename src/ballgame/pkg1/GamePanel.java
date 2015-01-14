@@ -8,12 +8,16 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import java.util.concurrent.Semaphore;
 
 class GamePanel extends JPanel {
 
-    int N = 101;
+    int N = 1200;
+    final Semaphore mutexRefresh = new Semaphore(0);
+    final Semaphore mutexRefreshing = new Semaphore(1);
+    int refresh = 0;
 
-    Boll[] boll = new Boll[N];
+    ArrayList<Boll> boll = new ArrayList(N);
 
     Target target = new Target(300, 400);
     MyKeyListener keyli = new MyKeyListener(this);
@@ -22,12 +26,12 @@ class GamePanel extends JPanel {
         JButton but = new JButton("kalle");
         add("North", but);
         but.addKeyListener(keyli);
-        setPreferredSize(new Dimension(1024, 1000));
+        setPreferredSize(new Dimension(1920, 1120));
         setDoubleBuffered(true);
 
-        boll[0] = new Boll(30, 30, 20, 0, new int[]{'W', 'S', 'A', 'D'}, 0.990, Color.GRAY);
+        boll.add(new Boll(30, 30, 10, 0, new int[]{'W', 'S', 'A', 'D'}, 0.995, Color.GRAY));
         for (int i = 1; i < N; i++) {
-            boll[i] = new Boll((80 + i * 50) % 1000, 100 + (i / 20) * 75, 20, 0, new int[]{KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT}, 0.998, Color.BLUE);
+            boll.add(new Boll((40 + 30 * (i % 100) + 20) , 50 + (i / 100) * 40, 10, 0, new int[]{KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT}, 0.995, Color.BLUE));
         }
     }
 
@@ -35,22 +39,29 @@ class GamePanel extends JPanel {
     public void paint(Graphics grphcs) {
         super.paint(grphcs);
         for (Boll b : boll) {
-            b.paint((Graphics2D) grphcs, boll[0]);
+            b.paint((Graphics2D) grphcs, (Boll) boll.get(0));
         }
-        boll[0].paint((Graphics2D) grphcs, null);
+        boll.get(0).paint((Graphics2D) grphcs, null);
 //        target.paint((Graphics2D) grphcs, null);
     }
 
     void run() {
         requestFocus();
         while (true) {
+//            if (keyli.isDown(KeyEvent.VK_PLUS)) {
+//                N++;
+//                boll.add();
+//            } else if (keyli.isDown(KeyEvent.VK_MINUS)) {
+//                N--;
+//                boll.remove(N, Boll);
+//            }
             for (Boll b : boll) {
                 b.move(keyli, getWidth(), getHeight());
             }
-            ArrayList<Boll> hits = boll[0].hits();
-            for (Boll b : hits) {
-                b.color = Color.YELLOW;
-            }
+//            ArrayList<Boll> hits = boll.get(0).hits();
+//            for (Boll b : hits) {
+//                b.color = Color.YELLOW;
+//            }
 //            for (int i = 0; i < 200; i++) {
 //                if (boll[i].hits(target)) {
 //                    target = new Target(20, getWidth(), getHeight());
@@ -62,7 +73,7 @@ class GamePanel extends JPanel {
             repaint();
 
             try {
-                Thread.sleep(6);
+                Thread.sleep(4);
             } catch (Exception e) {
             }
 
