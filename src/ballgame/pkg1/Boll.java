@@ -19,8 +19,11 @@ class Boll extends Point.Double {
 //        {38, 40, 37, 39}
 //    };
     static HashMap<Point, HashSet<Boll>> map = new HashMap();
+//    static Boll b1 = null;
+//    static Boll b2 = null;
+    boolean caseCollision = false;
     Point ph = new Point();
-    int tics;
+//    int tics;
     int[] myKeys;
     double vx, vy;
 
@@ -45,11 +48,13 @@ class Boll extends Point.Double {
         y = y0;
     }
 
+    double ox, oy;
+
     void move(MyKeyListener keyli, int width, int height) {
-        if (tics++ == 100) {
-            color = Color.BLUE;
-            tics = 0;
-        }
+//        if (tics++ == 100) {
+//            color = Color.BLUE;
+//            tics = 0;
+//        }
         if (keyli.isDown(myKeys[0])) {
             vy -= 0.06;
         }
@@ -62,6 +67,8 @@ class Boll extends Point.Double {
         if (keyli.isDown(myKeys[3])) {
             vx += 0.06;
         }
+        ox = x;
+        oy = y;
         x += vx;
         y += vy;
         if (vx > 0.1 || vy > 0.1 || vx < -0.1 || vy < -0.1) {
@@ -101,32 +108,58 @@ class Boll extends Point.Double {
             vy = -vy;
         }
         insert();
+//        if (b1 != null) {
+//            if (!b1.hits(b2)) {
+//                b1.caseColition = false;
+//                b2.caseColition = false;
+//                b1 = null;
+//                b2 = null;
+//                System.out.printf("<--------END-------->\n");
+//            }
+//        }
         Boll target = firstHit();
         if (target != null) {
             // unmove
-            if ((Math.abs(vx - target.vx) < 1) && (Math.abs(vy - target.vy) < 1)) {
-                double dist = target.distance(this);
-                double tdx = (x - target.x) / dist;
-                double tdy = (y - target.y) / dist;
-                double asd = 2 * radius - dist;
-                asd /= (radius * 2);
-                double dvx = (tdx * asd) * 8;
-                double dvy = (tdy * asd) * 8;
-                target.vx -= dvx;
-                target.vy -= dvy;
-                vx += dvx;
-                vy += dvy;
-                System.out.println("tdx: " + (tdx * asd * 8)) ;
-                System.out.println("tdy: " + (tdy * asd * 8));
-                System.out.println("asd: " + asd);
-                System.out.println("");
-            } else {
-                double tvx = vx, tvy = vy;
-                vx = target.vx;
-                vy = target.vy;
-                target.vx = tvx;
-                target.vy = tvy;
+//            x = ox;
+//            y = oy;
+            boolean isColiding = this.caseCollision || target.caseCollision;
+            if (!isColiding) {
+                collide(target, this);
+                caseCollision = true;
+//                if (b1 == null) {
+//                    b1 = this;
+//                    b2 = target;
+//                    this.caseColition = true;
+//                    target.caseColition = true;
+//                    System.out.printf("------->START<-------\n");
+//                }
+//                double dist = target.distance(this);
+//                double tdx = (x - target.x) / dist;
+//                double tdy = (y - target.y) / dist;
+//                double asd = 2 * radius - dist;
+//                asd /= (radius * 2);
+//                double dvx = (tdx * asd);
+//                double dvy = (tdy * asd);
+//                target.vx -= dvx;
+//                target.vy -= dvy;
+//                vx += dvx;
+//                vy += dvy;
+//                if (this.caseColition) {
+//                    System.out.printf("CO: %.3f,%.3f  %.3f,%.3f\n", dvx, dvy, tdx, tdy);
+//                }
+//            } else {
+//                if (this.caseColition) {
+//                    System.out.printf("XX: %.3f,%.3f  %.3f,%.3f\n", this.vx, this.vy, target.vx, target.vy);
+//                }
+//                double tvx = vx, tvy = vy;
+//                vx = target.vx;
+//                vy = target.vy;
+//                target.vx = tvx;
+//                target.vy = tvy;
+
             }
+        } else {
+            caseCollision = false;
         }
 
     }
@@ -170,19 +203,23 @@ class Boll extends Point.Double {
 
     void paint(Graphics2D grphcs, Boll other) {
         grphcs.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        grphcs.setColor(color);
+//        if (other != null) {
+//            grphcs.setColor(new Color(0, 0, 0, 50));
+//            Line2D line = new Line2D.Double(this, other);
+//            grphcs.draw(line);
+//        }
+//        if (caseCollision) {
+//            grphcs.setColor(Color.RED);
+//        } else {
+//            grphcs.setColor(color);
+//        }
         grphcs.fillOval((int) x - (int) radius, (int) y - (int) radius, 2 * (int) radius, 2 * (int) radius);
 //        grphcs.drawLine(boll, boll2);
 //        System.out.println("boll: " + boll);
 //        System.out.println("boll2: " + boll2);
-        if (other != null) {
-            grphcs.setColor(black);
-            Line2D line = new Line2D.Double(this, other);
-            grphcs.draw(line);
-        }
         double oy = y / (radius * 2);
-        grphcs.setColor(Color.MAGENTA);
-        grphcs.drawRect((int) ph.x * (int) radius * 2, (int) oy * (int) radius * 2, (int) radius * 2, (int) radius * 2);
+//        grphcs.setColor(Color.MAGENTA);
+//        grphcs.drawRect((int) ph.x * (int) radius * 2, (int) oy * (int) radius * 2, (int) radius * 2, (int) radius * 2);
     }
 
     boolean hits(Boll other) {
@@ -213,4 +250,25 @@ class Boll extends Point.Double {
         }
         return set;
     }
+
+    private void collide(Boll a, Boll b) {
+        double len = Point.distance(a.x, a.y, b.x, b.y);
+        double ABx = (b.x - a.x) / len, BAx = -ABx;
+        double ABy = (b.y - a.y) / len, BAy = -ABy;
+
+        double bSpeed = a.vx * ABx + a.vy * ABy;
+        ABx *= bSpeed;
+        ABy *= bSpeed;
+
+        double aSpeed = b.vx * BAx + b.vy * BAy;
+        BAx *= aSpeed;
+        BAy *= aSpeed;
+
+        b.vx = ABx + (b.vx - BAx);
+        b.vy = ABy + (b.vy - BAy);
+
+        a.vx = (a.vx - ABx) + BAx;
+        a.vy = (a.vy - ABy) + BAy;
+    }
+
 }
