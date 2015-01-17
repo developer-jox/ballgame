@@ -71,7 +71,7 @@ class Boll extends Point.Double {
         oy = y;
         x += vx;
         y += vy;
-        if (vx > 0.1 || vy > 0.1 || vx < -0.1 || vy < -0.1) {
+        if (vx > 1.5 || vy > 1.5 || vx < -1.5 || vy < -1.5) {
             vx *= gravity;
             vy *= gravity;
         }
@@ -217,7 +217,7 @@ class Boll extends Point.Double {
 //        grphcs.drawLine(boll, boll2);
 //        System.out.println("boll: " + boll);
 //        System.out.println("boll2: " + boll2);
-        double oy = y / (radius * 2);
+//        double oy = y / (radius * 2);
 //        grphcs.setColor(Color.MAGENTA);
 //        grphcs.drawRect((int) ph.x * (int) radius * 2, (int) oy * (int) radius * 2, (int) radius * 2, (int) radius * 2);
     }
