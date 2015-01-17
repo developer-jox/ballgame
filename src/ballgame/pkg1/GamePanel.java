@@ -12,7 +12,7 @@ import java.util.concurrent.Semaphore;
 
 class GamePanel extends JPanel {
 
-    int N = 1200;
+    int N = 800;
     final Semaphore mutexRefresh = new Semaphore(0);
     final Semaphore mutexRefreshing = new Semaphore(1);
     int refresh = 0;
@@ -31,7 +31,7 @@ class GamePanel extends JPanel {
 
         boll.add(new Boll(30, 30, 10, 0, new int[]{'W', 'S', 'A', 'D'}, 0.995, Color.GRAY));
         for (int i = 1; i < N; i++) {
-            boll.add(new Boll((40 + 30 * (i % 100) + 20) , 50 + (i / 100) * 40, 10, 0, new int[]{KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT}, 0.995, Color.BLUE));
+            boll.add(new Boll((40 + 30 * (i % 100) + 20), 50 + (i / 100) * 40, 10, 0, new int[]{KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT}, 0.995, Color.BLUE));
         }
     }
 
@@ -79,5 +79,4 @@ class GamePanel extends JPanel {
 
         }
     }
-
 }
