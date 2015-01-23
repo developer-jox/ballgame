@@ -120,10 +120,10 @@ class Boll extends Point.Double {
         Boll target = firstHit();
         if (target != null) {
             // unmove
-//            x = ox;
-//            y = oy;
-            boolean isColiding = this.caseCollision || target.caseCollision;
-            if (!isColiding) {
+            x = ox;
+            y = oy;
+//            boolean isColiding = this.caseCollision || target.caseCollision;
+//            if (!isColiding) {
                 collide(target, this);
                 caseCollision = true;
 //                if (b1 == null) {
@@ -158,9 +158,9 @@ class Boll extends Point.Double {
 //                target.vy = tvy;
 
             }
-        } else {
+//        } else {
             caseCollision = false;
-        }
+//        } 
 
     }
 
@@ -204,7 +204,7 @@ class Boll extends Point.Double {
     void paint(Graphics2D grphcs, Boll other) {
         grphcs.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //        if (other != null) {
-//            grphcs.setColor(new Color(0, 0, 0, 50));
+            grphcs.setColor(new Color(0, 0, 0, 50));
 //            Line2D line = new Line2D.Double(this, other);
 //            grphcs.draw(line);
 //        }
@@ -217,9 +217,9 @@ class Boll extends Point.Double {
 //        grphcs.drawLine(boll, boll2);
 //        System.out.println("boll: " + boll);
 //        System.out.println("boll2: " + boll2);
-//        double oy = y / (radius * 2);
-//        grphcs.setColor(Color.MAGENTA);
-//        grphcs.drawRect((int) ph.x * (int) radius * 2, (int) oy * (int) radius * 2, (int) radius * 2, (int) radius * 2);
+        double oy = y / (radius * 2);
+        grphcs.setColor(Color.MAGENTA);
+        grphcs.drawRect((int) ph.x * (int) radius * 2, (int) oy * (int) radius * 2, (int) radius * 2, (int) radius * 2);
     }
 
     boolean hits(Boll other) {
@@ -269,6 +269,7 @@ class Boll extends Point.Double {
 
         a.vx = (a.vx - ABx) + BAx;
         a.vy = (a.vy - ABy) + BAy;
+
     }
 
 }
