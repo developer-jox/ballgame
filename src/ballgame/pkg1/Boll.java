@@ -120,8 +120,8 @@ class Boll extends Point.Double {
         Boll target = firstHit();
         if (target != null) {
             // unmove
-            x = ox;
-            y = oy;
+//            x = ox;
+//            y = oy;
 //            boolean isColiding = this.caseCollision || target.caseCollision;
 //            if (!isColiding) {
                 collide(target, this);
