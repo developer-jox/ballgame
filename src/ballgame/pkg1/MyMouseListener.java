@@ -14,28 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package test1;
+package ballgame.pkg1;
 
-import java.applet.Applet;
-import java.awt.Graphics;
+import java.awt.Component;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class Test extends Applet {
-
-    Boll[] balls = new Boll[10];
-
-    @Override
-    public void init() {
-        for (int i = 0; i < 10; i++) {
-            balls[i] = new Boll(30 * i+5, i / 5);
-        }
+public class MyMouseListener implements MouseListener
+{
+    
+    MyMouseListener(Component comp) {
+        comp.addMouseListener(this);
     }
 
     @Override
-    public void paint(Graphics g) {
-        for (Boll ball : balls) {
-            ball.paint(g);
-        }
-        balls[9].move();
+    public void mouseClicked(MouseEvent e) {
     }
 
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    
 }

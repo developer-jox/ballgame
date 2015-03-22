@@ -1,3 +1,19 @@
+/* 
+ * Copyright (C) 2015 developer-jox <developer.jox@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package ballgame.pkg1;
 
 import java.awt.Color;
@@ -50,7 +66,7 @@ class Boll extends Point.Double {
 
     double ox, oy;
 
-    void move(MyKeyListener keyli, int width, int height) {
+    void move(MyKeyListener keyli, int width, int height) { //update speed and postiton
 //        if (tics++ == 100) {
 //            color = Color.BLUE;
 //            tics = 0;
@@ -162,7 +178,7 @@ class Boll extends Point.Double {
             caseCollision = false;
 //        } 
 
-    }
+    } //End move
 
     public Boll firstHit() {
         Point tPh = new Point();
@@ -201,10 +217,13 @@ class Boll extends Point.Double {
         return list;
     }
 
-    void paint(Graphics2D grphcs, Boll other) {
+    void paint(Graphics2D grphcs, Boll other) { //Paint balls 
+        nisse(grphcs,other);
+    }
+    void nisse(Graphics2D grphcs, Boll other) {
         grphcs.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //        if (other != null) {
-            grphcs.setColor(new Color(0, 0, 0, 50));
+//            grphcs.setColor(Color.BLACK);
 //            Line2D line = new Line2D.Double(this, other);
 //            grphcs.draw(line);
 //        }
@@ -217,9 +236,9 @@ class Boll extends Point.Double {
 //        grphcs.drawLine(boll, boll2);
 //        System.out.println("boll: " + boll);
 //        System.out.println("boll2: " + boll2);
-        double oy = y / (radius * 2);
-        grphcs.setColor(Color.MAGENTA);
-        grphcs.drawRect((int) ph.x * (int) radius * 2, (int) oy * (int) radius * 2, (int) radius * 2, (int) radius * 2);
+//        double oy = y / (radius * 2);
+//        grphcs.setColor(Color.MAGENTA);
+//        grphcs.drawRect((int) ph.x * (int) radius * 2, (int) oy * (int) radius * 2, (int) radius * 2, (int) radius * 2);
     }
 
     boolean hits(Boll other) {
@@ -251,7 +270,7 @@ class Boll extends Point.Double {
         return set;
     }
 
-    private void collide(Boll a, Boll b) {
+    private void collide(Boll a, Boll b) { //collision
         double len = Point.distance(a.x, a.y, b.x, b.y);
         double ABx = (b.x - a.x) / len, BAx = -ABx;
         double ABy = (b.y - a.y) / len, BAy = -ABy;

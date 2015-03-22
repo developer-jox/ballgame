@@ -1,33 +1,57 @@
+/* 
+ * Copyright (C) 2015 developer-jox <developer.jox@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package ballgame.pkg1;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import java.util.concurrent.Semaphore;
 
 class GamePanel extends JPanel {
 
-    int N = 2000;
-    int TICKS_PER_SECOND = 60;
-    int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
-    int MAX_FRAMESKIP = 10;
-    int refresh = 0;
+    int N = 600;
+
+    Date date = new Date();
+    long nanos = System.nanoTime(), delay = (long) 1e7;
 
     ArrayList<Boll> boll = new ArrayList(N);
 
     Target target = new Target(300, 400);
     MyKeyListener keyli = new MyKeyListener(this);
+//    MyFocusListener focusi = new MyFocusListener(this);
 
     public GamePanel() {
+
+//        while (System.nanoTime()<nanos+delay) {
+//            Thread.yield();
+//        }
+//        nanos+= delay;
+        
         JButton but = new JButton("kalle");
         add("North", but);
         but.addKeyListener(keyli);
-        setPreferredSize(new Dimension(1920, 1000));
+        Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
+        setPreferredSize(new Dimension(res.width, res.height - 79));
         setDoubleBuffered(true);
 
         boll.add(new Boll(30, 30, 10, 0, new int[]{'W', 'S', 'A', 'D'}, 0.995, Color.GRAY));
